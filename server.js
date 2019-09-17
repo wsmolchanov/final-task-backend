@@ -22,6 +22,7 @@ app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
+require('./routes/auth.route')(app);
 
 app.listen(config.PORT, function () {
   console.log(`Example app listening on port ${config.PORT}!`);
