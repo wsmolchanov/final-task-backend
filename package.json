@@ -1,0 +1,23 @@
+{
+  "name": "final-task-backend",
+  "version": "1.0.0",
+  "description": "final-task-back",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wsmolchanov/final-task-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wsmolchanov/final-task-backend/issues"
+  },
+  "homepage": "https://github.com/wsmolchanov/final-task-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.1"
+  }
+}
