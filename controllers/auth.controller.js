@@ -12,11 +12,15 @@
   function login(req, res, next) {
     console.log('login auth controller');
 
+    console.log(req.body);
+
     res.status(200).send({ message: 'login is good' });
   }
 
   function register(req, res, next) {
     console.log('register auth controller');
+
+    console.log(req.body);
 
     res.status(200).send({ message: 'signup is good' });
   }

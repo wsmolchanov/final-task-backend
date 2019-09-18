@@ -1,8 +1,20 @@
 var express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config/config');
+const cors = require('cors');
+const bodyParser = require('body-parser'); 
+
 
 var app = express();
+app.use(cors());
+app.use(bodyParser.json({
+  limit: '50mb',
+  extended: true
+}));
+app.use(bodyParser.urlencoded({
+  limit: '50mb',
+  extended: true
+}));
 
 const db = mongoose.createConnection('mongodb://localhost/my_database', {
   useNewUrlParser: true,
@@ -14,7 +26,7 @@ db.on('error', function (err) {
     console.log(err);
   }
 });
-db.once('open', function callback () {
+db.once('open', function callback() {
   console.info('CLIENT DB connected successfully');
 });
 
