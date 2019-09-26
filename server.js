@@ -1,8 +1,10 @@
 var express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config/config');
+const fs = require('fs');
 const cors = require('cors');
-const bodyParser = require('body-parser'); 
+const bodyParser = require('body-parser');
+const modelsPath		= __dirname + '/models/';
 
 
 var app = express();
@@ -15,6 +17,11 @@ app.use(bodyParser.urlencoded({
   limit: '50mb',
   extended: true
 }));
+
+fs.readdirSync(modelsPath).forEach(function (file) {
+  require(modelsPath + '/' + file);
+});
+
 
 const db = mongoose.createConnection('mongodb://localhost/my_database', {
   useNewUrlParser: true,
@@ -29,6 +36,10 @@ db.on('error', function (err) {
 db.once('open', function callback() {
   console.info('CLIENT DB connected successfully');
 });
+module.exports = {
+  main: db
+};
+
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
