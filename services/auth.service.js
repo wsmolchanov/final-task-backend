@@ -1,72 +1,67 @@
 (function () {
 	'use strict';
-
+  
 	const bcrypt = require('bcrypt-nodejs');
-	const config = require('../../config/config.js');
+	const server = require('../server');
+	const config = require('../config/config');
 	const jwt = require('jsonwebtoken');
-
-
+	const User = server.main.model('User');
+  
+  
 	module.exports = {
-		comparePassword,
-		generateHash,
-		createUser
+	  createUser,
+	  findUsers,
+	  comparePassword
 	};
-
-	
-
-	function comparePassword (password, currentUser) {
-		return new Promise(function (resolve, reject) {
-			bcrypt.compare(password, currentUser.password, function (err, same) {
-				if (err) {
-					// bcrypt internal error or smth.
-					reject(new Error(JSON.stringify({
-						status : 400,
-						type   : 'Login failed'
-					})));
-				} else if (!err && !same) {
-					// wrong password
-					reject(new Error(JSON.stringify({
-						status : 400,
-						type   : `Passwords don't match`
-					})));
-				} else {
-					// user exists and credentials is correct
-					return resolve(currentUser);
-				}
-			});
+  
+	async function findUsers(query) {
+	  try {
+		return await User.find(query);
+	  } catch (error) {
+		throw error;
+	  }
+	}
+  
+	async function createUser(userParams) {
+	  try {
+		// const hashPassword = await _generateHash(userParams.password);
+		// userParams.password = hashPassword;
+		const user = await User.create(userParams);
+  
+		return user;
+	  } catch (e) {
+		throw e;
+	  }
+	}
+  
+  
+	function comparePassword(password, currentUser) {
+	  return new Promise(function (resolve, reject) {
+		bcrypt.compare(password, currentUser.password, function (err, same) {
+		  if (err) {
+			reject(new Error(JSON.stringify({
+			  status: 400,
+			  type: 'Login failed'
+			})));
+		  } else if (!err && !same) {
+			// wrong password
+			reject(new Error(JSON.stringify({
+			  status: 400,
+			  type: `Passwords don't match`
+			})));
+		  } else {
+			return resolve(currentUser);
+		  }
 		});
+	  });
 	}
-
-	function generateHash(password) {
-		return new Promise(function (resolve) {
-			let salt = bcrypt.genSaltSync(10);
-			let hash = bcrypt.hashSync(password, salt);
-			resolve(hash);
-		});
+  
+	function _generateHash(password) {
+	  return new Promise(function (resolve) {
+		let salt = bcrypt.genSaltSync(10);
+		let hash = bcrypt.hashSync(password, salt);
+		resolve(hash);
+	  });
 	}
-
-	function createUser(username, hash, email ) {
-		
-	}
-	function createUser (query ) {
-		try {
-			var users = await User.find(query)
-			return users;
-		} catch (e) {
-			// Log Errors
-			throw Error('Error while Paginating Users')
-		}
-
-		
-	}
-	exports.getUsers = async function (query) {
-
-		try {
-			var users = await New.User (query)
-			return users;
-		} catch (e) {
-			// Log Errors
-			throw Error('Error while Paginating Users')
-		}
-	}
-})();
+  
+  })();
