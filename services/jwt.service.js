@@ -10,9 +10,9 @@
     jwtVerify
   };
 
-  function jwtCreate(payload, expiresIn = 'Id') {
+  function jwtCreate(payload, expiresIn = '1d') {
     return new Promise(function (resolve, reject) {
-      jwt.sign(payload, JWT_KEY, { expiresIn }, function (err, token) { 
+      jwt.sign(payload, JWT_KEY, { expiresIn }, function (err, token) {
         if (err) {
           reject(new Error(JSON.stringify({
             status: 400,
@@ -37,7 +37,7 @@
 				type   : 'JWT Verify Server Error'
 			  })));
 			} else {
-			   resolve(decoded); 
+			   resolve(decoded);
 			}
 		  }
 	  );

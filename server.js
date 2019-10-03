@@ -45,7 +45,12 @@ app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
+app.use(require('./_helpers/jwt.middlerware').jwtCheck);
+
+// ROUTES
 require('./routes/auth.route')(app);
+
+app.use(require('./_helpers/error-handler').handleError);
 
 app.listen(config.PORT, function () {
   console.log(`Example app listening on port ${config.PORT}!`);

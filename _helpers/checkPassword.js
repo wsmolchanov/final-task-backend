@@ -5,7 +5,7 @@
   const jwt = require('jsonwebtoken');
 
 
-  module.exports = {    
+  module.exports = {
     comparePassword,
     _generateHash
   };
@@ -35,11 +35,10 @@ function comparePassword(password, currentUser) {
 }
 
 function _generateHash(password) {
-  return new Promise(function (resolve) {
-    let salt = bcrypt.genSaltSync(10);
-    let hash = bcrypt.hashSync(password, salt);
-    resolve(hash);
-  });
+  let salt = bcrypt.genSaltSync(10);
+  let hash = bcrypt.hashSync(password, salt);
+
+  return hash;
 }
 
 

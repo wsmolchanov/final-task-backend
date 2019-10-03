@@ -4,7 +4,10 @@
 	const AuthController = require('../controllers/auth.controller');
 
 	module.exports = function (app) {
-        app.post('/auth/login', AuthController.login);
+		app.get('/auth', AuthController.auth);
+		app.post('/auth/login', AuthController.login);
 		app.post('/auth/signup', AuthController.signup);
+		app.post('/auth/update', AuthController.update);
+		app.get('/auth/getUsers', AuthController.getUsers)
 	};
 })();
