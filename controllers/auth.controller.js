@@ -125,6 +125,10 @@
 
   }
 
+  async function historyList(req, res, next) {
+    
+  }
+
 
 
 
