@@ -49,6 +49,7 @@ app.use(require('./_helpers/jwt.middlerware').jwtCheck);
 
 // ROUTES
 require('./routes/auth.route')(app);
+require('./routes/history.route')(app);
 
 app.use(require('./_helpers/error-handler').handleError);
 

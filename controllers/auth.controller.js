@@ -92,17 +92,31 @@
       next(error);
     }
   }
-  async function update(err, db) {
-    // todo: validate req.body
-      if (err) throw err;
-      let dbo = db.db("mydb");
-      var myquery = { address: /^S/ };
-      var newvalues = {$set: {name: "Minnie"} };
-      dbo.collection("customers").updateMany(myquery, newvalues, function(err, res) {
-        if (err) throw err;
-        console.log(res.result.nModified + " document(s) updated");
-        db.close();
-      });
+  async function update(req, res, next) {
+    try {
+      if (req.userId) {
+        const user = await UserService.findUsers({ _id: req.userId });
+
+        if (user && user[0]) {
+          if (req.body.username) {
+            user[0].username = req.body.username;
+          }
+          if (req.body.password) {
+            const hashPassword = CheckPassword._generateHash(req.body.password);
+            user[0].password = hashPassword;
+          }
+          await user[0].save();
+
+          res.status(200).send(user[0]);
+        } else {
+          throw new Error('user not found');
+        }
+      } else {
+        throw new Error('bad auth token');
+      }
+    } catch (error) {
+      next(error);
+    }
 
   }
 
@@ -126,7 +140,7 @@
   }
 
   async function historyList(req, res, next) {
-    
+
   }
 
 
